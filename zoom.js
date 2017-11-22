@@ -1,56 +1,56 @@
-var current = 0;
-function fillCats(){
-  var catPercent = 100 / current;
-  $('body').css('background-size', catPercent+'%');
+
+// filling functions
+var currentNumCats = 0;
+var fillCats = function(){
+  var catPercent = 100 / currentNumCats;
+  document.body.style.backgroundSize = catPercent + '%';
 }
-  
-function randomSize(){
-  var numCatsAcross = current;
-  while(numCatsAcross == current){
+
+var randomSize = function(){
+  var numCatsAcross = currentNumCats;
+  while (numCatsAcross === currentNumCats){
     numCatsAcross = Math.floor(Math.random()*20) + 4;
   }
-  current = numCatsAcross;
+  currentNumCats = numCatsAcross;
   fillCats();
 }
 
-function increasingSize(){
-  current--;
-  if(current < 1){
-    current = 40;
+var increasingSize = function(){
+  currentNumCats--;
+  if (currentNumCats < 1){
+    currentNumCats = 40;
   }
   fillCats();
 }
 
-function decreasingSize(){
-  current++;
-  if(current > 40){
-    current = 1;
+var decreasingSize = function(){
+  currentNumCats++;
+  if (currentNumCats > 40){
+    currentNumCats = 1;
   }
   fillCats();
 }
 
+// selecting which function
+var currentFunc = 0;
 var allFuncs = [
-//        randomSize,
   increasingSize,
-  decreasingSize
+  decreasingSize,
+  // randomSize,
 ];
 
-var currentFunc = 0;
-function catFunc(){
+var catFunc = function(){
   allFuncs[currentFunc]();
 };
 
-function incrementFunc(){     
+var changeFunc = function(){
   if(currentFunc >= allFuncs.length - 1){
     currentFunc = 0;
-  }
-  else{
+  } else {
     currentFunc++;
   }
 };
 
-$('body').on('click', incrementFunc);
-
-$(document).ready(function(){
-  setInterval(catFunc, 50);
-});
+// run functions
+document.body.addEventListener('click', changeFunc);
+setInterval(catFunc, 50);
