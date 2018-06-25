@@ -4,18 +4,101 @@
   <title>CATSUKI-SAMA</title>
   <link rel="shortcut icon" href="favicon.png" />
 
-  <script src="zoom.js?v=2017-11-22" defer></script>
   <style type="text/css">
-    html, body {height: 100%;}
+    html, body {
+      margin: 0px;
+      height: 100%;
+    }
     body {
       background-image: url('catsuki.jpg');
+      cursor: pointer;
+
+      font-family: monospace;
+      text-align: center;
+    }
+
+    #welcome {
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      cursor: default;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #enter {
       cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <audio id="sound" loop autoplay preload>
+  <audio id="sound" loop preload>
     <source src="theme.mp3" type="audio/mpeg">
   </audio>
+  <div id="welcome">
+    <div id="enter">
+      <img src="catsuki.jpg">
+      <h1> CLICK </h1>
+    </div>
+  </div>
+  <script type="text/javascript">
+
+    // filling functions
+    var currentNumCats = 0;
+    function fillCats(){
+      var catPercent = 100 / currentNumCats;
+      document.body.style.backgroundSize = catPercent + '%';
+    }
+    function randomSize(){
+      var numCatsAcross = currentNumCats;
+      while (numCatsAcross === currentNumCats){
+        numCatsAcross = Math.floor(Math.random()*20) + 4;
+      }
+      currentNumCats = numCatsAcross;
+      fillCats();
+    }
+    function increasingSize(){
+      currentNumCats--;
+      if (currentNumCats < 1){
+        currentNumCats = 40;
+      }
+      fillCats();
+    }
+    function decreasingSize(){
+      currentNumCats++;
+      if (currentNumCats > 40){
+        currentNumCats = 1;
+      }
+      fillCats();
+    }
+
+    // selecting which function
+    var currentFunc = 0;
+    var allFuncs = [
+      increasingSize,
+      decreasingSize,
+      // randomSize,
+    ];
+    function loopFunc(){
+      allFuncs[currentFunc]();
+    }
+    function changeFunc(){
+      if(currentFunc >= allFuncs.length - 1){
+        currentFunc = 0;
+      } else {
+        currentFunc++;
+      }
+    }
+
+    // startup
+    document.getElementById('enter').addEventListener('click', () => {
+      document.getElementById('welcome').remove();
+      document.getElementById('sound').play();
+      document.body.addEventListener('click', changeFunc);
+      setInterval(loopFunc, 50);
+    });
+
+  </script>
 </body>
 </html>
